@@ -6,10 +6,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable // implements MustVerifyEmail
+
+class User extends Authenticatable implements FilamentUser // implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -23,6 +28,8 @@ class User extends Authenticatable // implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'phone',
+        'is_active'
     ];
 
     /**
@@ -32,6 +39,8 @@ class User extends Authenticatable // implements MustVerifyEmail
      */
     protected $hidden = [
         'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
         'remember_token',
     ];
 
@@ -45,6 +54,7 @@ class User extends Authenticatable // implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean'
         ];
     }
 
@@ -55,7 +65,26 @@ class User extends Authenticatable // implements MustVerifyEmail
     {
         return Str::of($this->name)
             ->explode(' ')
-            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
+            ->take(2)
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    // local scope
+    #[Scope()]
+    public function active(Builder $builder)
+    {
+        $builder->where('is_active', true);
+    }
+
+    //relationship
+    public function orderStatusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class);
+    }
+    
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@test.com');
     }
 }
