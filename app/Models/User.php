@@ -12,12 +12,13 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable implements FilamentUser // implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
