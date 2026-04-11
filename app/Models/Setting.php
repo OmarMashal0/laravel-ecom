@@ -24,7 +24,7 @@ class Setting extends Model
     }
 
     // Helper Methods
-    public static function get($key, $default = null)
+    public static function getSetting($key, $default = null)
     {
         $setting = static::where('key', $key)->first();
         
@@ -35,7 +35,7 @@ class Setting extends Model
         return static::castValue($setting->value, $setting->type);
     }
 
-    public static function set($key, $value, $type = 'string', $group = 'general')
+    public static function setSetting($key, $value, $type = 'string', $group = 'general')
     {
         return static::updateOrCreate(
             ['key' => $key],

@@ -73,7 +73,7 @@ class User extends Authenticatable implements FilamentUser // implements MustVer
 
     // local scope
     #[Scope()]
-    public function active(Builder $builder)
+    protected function active(Builder $builder)
     {
         $builder->where('is_active', true);
     }
