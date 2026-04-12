@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('address_line_1');
             $table->string('address_line_2')->nullable();
             $table->string('city');
-            $table->string('state');
+            $table->string('state')->nullable();
             $table->string('postal_code');
-            $table->string('country');
+            $table->string('country')->default('US');
             $table->boolean('is_default')->default(false);
-            $table->enum('type', ['shipping','billing'])->default('shipping');
+            $table->enum('type', ['shipping', 'billing', 'both'])->default('shipping');
             $table->timestamps();
         });
     }

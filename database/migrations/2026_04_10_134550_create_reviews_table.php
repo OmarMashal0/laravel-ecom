@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_approved')->default(false);
             $table->timestamps();
             
-            // ensure one review per customer per product
+            // Ensure one review per customer per product
             $table->unique(['product_id', 'customer_id']);
         });
     }

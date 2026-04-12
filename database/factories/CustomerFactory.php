@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Customer;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Customer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
  */
 class CustomerFactory extends Factory
 {
@@ -18,7 +19,15 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'phone' => fake()->phoneNumber(),
+            'date_of_birth' => fake()->date('Y-m-d', '-18 years'),
+            'gender' => fake()->randomElement(['male', 'female', 'other']),
+            'is_active' => true,
+            'remember_token' => Str::random(10),
         ];
     }
 }
