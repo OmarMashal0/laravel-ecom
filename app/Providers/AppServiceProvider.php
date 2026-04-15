@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       
+        // Custom registration response to fix admin redirect issue
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            fn () => new class implements \Laravel\Fortify\Contracts\RegisterResponse {
+                public function toResponse($request) {
+                    return redirect('/my-account');
+                }
+            }
+        );
     }
 }
