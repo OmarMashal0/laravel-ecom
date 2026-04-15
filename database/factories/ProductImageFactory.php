@@ -20,10 +20,10 @@ class ProductImageFactory extends Factory
         return [
             'product_id' => Product::factory(),
             'product_variant_id' => null,
-            'image_path' => 'products/placeholder-' . fake()->numberBetween(1, 5) . '.jpg',
-            'alt_text' => fake()->sentence(3),
+            'image_path' => 'products/placeholder-' . $this->faker->numberBetween(1, 5) . '.jpg',
+            'alt_text' => $this->faker->sentence(3),
             'is_primary' => false,
-            'sort_order' => fake()->numberBetween(0, 10),
+            'sort_order' => $this->faker->numberBetween(0, 10),
         ];
     }
 

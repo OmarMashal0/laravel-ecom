@@ -18,10 +18,10 @@ class ProductVariantFactory extends Factory
      */
     public function definition(): array
     {
-        $color = fake()->randomElement(['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow']);
-        $size = fake()->randomElement(['Small', 'Medium', 'Large', 'XL', 'XXL']);
+        $color = $this->faker->randomElement(['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow']);
+        $size = $this->faker->randomElement(['Small', 'Medium', 'Large', 'XL', 'XXL']);
         $name = "$color - $size";
-        $price = fake()->randomFloat(2, 15, 600);
+        $price = $this->faker->randomFloat(2, 15, 600);
 
         return [
             'product_id' => Product::factory(),
@@ -29,11 +29,11 @@ class ProductVariantFactory extends Factory
             'name' => $name,
             'options' => json_encode(['color' => $color, 'size' => $size]),
             'price' => $price,
-            'compare_price' => fake()->boolean(30) ? $price * 1.3 : null,
-            'stock_quantity' => fake()->numberBetween(0, 100),
-            'stock_status' => fake()->randomElement(['in_stock', 'in_stock', 'out_of_stock']),
+            'compare_price' => $this->faker->boolean(30) ? $price * 1.3 : null,
+            'stock_quantity' => $this->faker->numberBetween(0, 100),
+            'stock_status' => $this->faker->randomElement(['in_stock', 'in_stock', 'out_of_stock']),
             'is_active' => true,
-            'sort_order' => fake()->numberBetween(0, 10),
+            'sort_order' => $this->faker->numberBetween(0, 10),
         ];
     }
 }

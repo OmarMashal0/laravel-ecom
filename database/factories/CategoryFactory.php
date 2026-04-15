@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->randomElement([
+        $name = $this->faker->unique()->randomElement([
             'Electronics',
             'Fashion & Apparel',
             'Home & Garden',
@@ -35,11 +35,11 @@ class CategoryFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => fake()->paragraph(),
+            'description' => $this->faker->paragraph(),
             'is_active' => true,
-            'sort_order' => fake()->numberBetween(0, 100),
+            'sort_order' => $this->faker->numberBetween(0, 100),
             'meta_title' => $name . ' - Shop Online',
-            'meta_description' => fake()->sentence(20),
+            'meta_description' => $this->faker->sentence(20),
         ];
     }
 }

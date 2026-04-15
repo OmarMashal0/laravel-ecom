@@ -17,15 +17,15 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->company();
+        $name = $this->faker->unique()->company();
 
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => fake()->paragraph(),
-            'website' => fake()->url(),
+            'description' => $this->faker->paragraph(),
+            'website' => $this->faker->url(),
             'is_active' => true,
-            'sort_order' => fake()->numberBetween(0, 100),
+            'sort_order' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

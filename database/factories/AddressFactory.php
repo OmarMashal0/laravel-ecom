@@ -19,16 +19,16 @@ class AddressFactory extends Factory
     {
         return [
             'customer_id' => Customer::factory(),
-            'full_name' => fake()->name(),
-            'phone' => fake()->phoneNumber(),
-            'address_line_1' => fake()->streetAddress(),
-            'address_line_2' => fake()->boolean(30) ? fake()->secondaryAddress() : null,
-            'city' => fake()->city(),
-            'state' => fake()->state(),
-            'postal_code' => fake()->postcode(),
+            'full_name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'address_line_1' => $this->faker->streetAddress(),
+            'address_line_2' => $this->faker->boolean(30) ? $this->faker->secondaryAddress() : null,
+            'city' => $this->faker->city(),
+            'state' => $this->faker->state(),
+            'postal_code' => $this->faker->postcode(),
             'country' => 'US',
             'is_default' => false,
-            'type' => fake()->randomElement(['shipping', 'billing', 'both']),
+            'type' => $this->faker->randomElement(['shipping', 'billing', 'both']),
         ];
     }
 

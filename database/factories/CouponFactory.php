@@ -17,19 +17,19 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
-        $type = fake()->randomElement(['fixed', 'percentage']);
-        $value = $type === 'percentage' ? fake()->numberBetween(5, 50) : fake()->numberBetween(5, 100);
+        $type = $this->faker->randomElement(['fixed', 'percentage']);
+        $value = $type === 'percentage' ? $this->faker->numberBetween(5, 50) : $this->faker->numberBetween(5, 100);
 
         return [
             'code' => strtoupper(Str::random(8)),
             'type' => $type,
             'value' => $value,
-            'minimum_order_value' => fake()->boolean(50) ? fake()->numberBetween(50, 200) : null,
-            'maximum_discount' => $type === 'percentage' ? fake()->numberBetween(20, 100) : null,
-            'usage_limit' => fake()->boolean(70) ? fake()->numberBetween(10, 100) : null,
-            'usage_limit_per_customer' => fake()->boolean(80) ? fake()->numberBetween(1, 5) : null,
-            'starts_at' => now()->subDays(fake()->numberBetween(0, 30)),
-            'expires_at' => now()->addDays(fake()->numberBetween(30, 90)),
+            'minimum_order_value' => $this->faker->boolean(50) ? $this->faker->numberBetween(50, 200) : null,
+            'maximum_discount' => $type === 'percentage' ? $this->faker->numberBetween(20, 100) : null,
+            'usage_limit' => $this->faker->boolean(70) ? $this->faker->numberBetween(10, 100) : null,
+            'usage_limit_per_customer' => $this->faker->boolean(80) ? $this->faker->numberBetween(1, 5) : null,
+            'starts_at' => now()->subDays($this->faker->numberBetween(0, 30)),
+            'expires_at' => now()->addDays($this->faker->numberBetween(30, 90)),
             'is_active' => true,
         ];
     }
