@@ -25,7 +25,26 @@ class ProductsTable
                     ->defaultImageUrl(url('/images/placeholder.jpg')),
                 TextColumn::make('name')
                     ->searchable(),
+                TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable(),
+                    TextColumn::make('category.name')
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color('info'),
+                    TextColumn::make('brand.name')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable()
+                    ->badge(),
                 TextColumn::make('price')
+                    ->money('USD')
+                    ->sortable(),
+                TextColumn::make('compare_price')
+                    ->money('USD')
+                    ->sortable(),
+                TextColumn::make('cost_price')
                     ->money('USD')
                     ->sortable(),
                 TextColumn::make('stock_quantity')

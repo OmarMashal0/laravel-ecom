@@ -52,19 +52,27 @@ class Product extends Model
             'has_variants' => 'boolean',
         ];
     }
-
+     /**
+     * Scope to only active products
+     */
     #[Scope]
     protected function active(Builder $query): void
     {
         $query->where('is_active', true);
     }
 
+    /**
+     * Scope to only featured products
+     */
     #[Scope]
     protected function featured(Builder $query): void
     {
         $query->where('is_featured', true);
     }
 
+    /**
+     * Scope to only in-stock products
+     */
     #[Scope]
     protected function inStock(Builder $query): void
     {
@@ -72,6 +80,9 @@ class Product extends Model
               ->where('stock_quantity', '>', 0);
     }
 
+    /**
+     * Scope to products with low stock
+     */
     #[Scope]
     protected function lowStock(Builder $query): void
     {
@@ -79,18 +90,27 @@ class Product extends Model
               ->where('stock_quantity', '>', 0);
     }
 
+    /**
+     * Scope to filter by category
+     */
     #[Scope]
     protected function inCategory(Builder $query, int $categoryId): void
     {
         $query->where('category_id', $categoryId);
     }
 
+    /**
+     * Scope to filter by brand
+     */
     #[Scope]
     protected function ofBrand(Builder $query, int $brandId): void
     {
         $query->where('brand_id', $brandId);
     }
 
+    /**
+     * Scope to filter by price range
+     */
     #[Scope]
     protected function inPriceRange(Builder $query, float $min, float $max): void
     {

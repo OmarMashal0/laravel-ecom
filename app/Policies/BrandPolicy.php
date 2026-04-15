@@ -37,11 +37,6 @@ class BrandPolicy
         return $authUser->can('Delete:Brand');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Brand');
-    }
-
     public function restore(AuthUser $authUser, Brand $brand): bool
     {
         return $authUser->can('Restore:Brand');

@@ -37,11 +37,6 @@ class CategoryPolicy
         return $authUser->can('Delete:Category');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Category');
-    }
-
     public function restore(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('Restore:Category');

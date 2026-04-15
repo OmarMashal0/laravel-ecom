@@ -56,6 +56,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugins([FilamentShieldPlugin::make()]);
+            ->plugins([
+                FilamentShieldPlugin::make()
+            ]);
     }
 }

@@ -1,11 +1,5 @@
 <?php
 
-declare(strict_types=1);
-use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
-use Filament\Pages\Dashboard;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
-
 return [
 
     /*
@@ -126,7 +120,7 @@ return [
         'merge' => true,
         'generate' => true,
         'methods' => [
-            'viewAny', 'view', 'create', 'update', 'delete', 'deleteAny', 'restore',
+            'viewAny', 'view', 'create', 'update', 'delete', 'restore',
             'forceDelete', 'forceDeleteAny', 'restoreAny', 'replicate', 'reorder',
         ],
         'single_parameter_methods' => [
@@ -152,7 +146,7 @@ return [
 
     'localization' => [
         'enabled' => false,
-        'key' => 'filament-shield::filament-shield.resource_permission_prefixes_labels',
+        'key' => 'filament-shield::filament-shield',
     ],
 
     /*
@@ -169,7 +163,7 @@ return [
     'resources' => [
         'subject' => 'model',
         'manage' => [
-            RoleResource::class => [
+            \BezhanSalleh\FilamentShield\Resources\Roles\RoleResource::class => [
                 'viewAny',
                 'view',
                 'create',
@@ -197,7 +191,7 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            Dashboard::class,
+            \Filament\Pages\Dashboard::class,
         ],
     ],
 
@@ -216,8 +210,8 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            AccountWidget::class,
-            FilamentInfoWidget::class,
+            \Filament\Widgets\AccountWidget::class,
+            \Filament\Widgets\FilamentInfoWidget::class,
         ],
     ],
 

@@ -37,11 +37,6 @@ class ReviewPolicy
         return $authUser->can('Delete:Review');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Review');
-    }
-
     public function restore(AuthUser $authUser, Review $review): bool
     {
         return $authUser->can('Restore:Review');

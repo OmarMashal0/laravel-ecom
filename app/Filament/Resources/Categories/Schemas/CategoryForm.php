@@ -30,7 +30,11 @@ class CategoryForm
                             ->default(null)
                             ->columnSpanFull(),
                         FileUpload::make('image')
+                            ->disk('public')
                             ->directory('categories')
+                            ->imageEditor()
+                            ->preserveFilenames()
+                            ->downloadable()
                             ->image(),
                     ]),
 

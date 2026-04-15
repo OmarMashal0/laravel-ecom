@@ -23,35 +23,31 @@ class Category extends Model
     ];
 
     #[Scope()]
-    protected function active(Builder $builder)
-    {
+    protected function active(Builder $builder){
         $builder->where('is_active', true);
     }
 
     #[Scope()]
-    protected function sorted(Builder $builder)
-    {
-        $builder->orderBy('sort_order', 'asc');
+    protected function sorted(Builder $builder){
+        $builder->orderBy('sort_order','asc');
     }
 
     //relationship
-    public function products()
-    {
+    public function products(){
         return $this->hasMany(Product::class);
     }
 
-    protected static function boot()
-    {
+    protected static function boot(){
         parent::boot();
 
-        static::creating(function ($category) {
+        static::creating(function($category){
             if (empty($category->slug)) {
                 $category->slug = Str::slug($category->name);
             }
         });
 
-        static::updating(function ($category) {
-            if ($category->isDirty('name') && empty($category->slug)) {
+        static::updating(function($category){
+            if ($category->isDirty('name') && empty($category->empty)) {
                 $category->slug = Str::slug($category->name);
             }
         });

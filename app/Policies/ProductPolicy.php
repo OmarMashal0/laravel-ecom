@@ -37,11 +37,6 @@ class ProductPolicy
         return $authUser->can('Delete:Product');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Product');
-    }
-
     public function restore(AuthUser $authUser, Product $product): bool
     {
         return $authUser->can('Restore:Product');

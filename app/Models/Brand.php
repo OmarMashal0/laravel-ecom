@@ -45,7 +45,7 @@ class Brand extends Model
         });
 
         static::updating(function($brand){
-            if ($brand->isDirty('name') && empty($brand->slug)) {
+            if ($brand->isDirty('name') && empty($brand->empty)) {
                 $brand->slug = Str::slug($brand->name);
             }
         });

@@ -36,37 +36,54 @@ class Order extends Model
         'customer_notes',
         'admin_notes',
     ];
-
+ /**
+     * Scope to filter by status
+     */
     #[Scope]
     protected function ofStatus(Builder $query, string $status): void
     {
         $query->where('status', $status);
     }
 
+    /**
+     * Scope to filter by payment status
+     */
     #[Scope]
     protected function paymentStatus(Builder $query, string $status): void
     {
         $query->where('payment_status', $status);
     }
 
+    /**
+     * Scope to only pending orders
+     */
     #[Scope]
     protected function pending(Builder $query): void
     {
         $query->where('status', 'pending');
     }
 
+    /**
+     * Scope to only processing orders
+     */
     #[Scope]
     protected function processing(Builder $query): void
     {
         $query->where('status', 'processing');
     }
 
+    /**
+     * Scope to only shipped orders
+     */
     #[Scope]
     protected function shipped(Builder $query): void
     {
         $query->where('status', 'shipped');
     }
 
+    /**
+     * Scope to only delivered orders
+     */
     #[Scope]
     protected function delivered(Builder $query): void
     {

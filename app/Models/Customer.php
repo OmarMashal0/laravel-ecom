@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-class Customer extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class Customer extends Authenticatable
 {
     use HasFactory;
     protected $fillable = [
@@ -37,6 +37,9 @@ class Customer extends Model
         ];
     }
 
+    /**
+     * Scope to only active customers
+     */
     #[Scope]
     protected function active(Builder $query): void
     {

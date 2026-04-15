@@ -15,22 +15,22 @@ use App\Filament\Resources\Customers\CustomerResource;
 class LatestOrders extends TableWidget
 {
     protected static ?int $sort = 1;
-    protected int|string|array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'full';
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn(): Builder => Order::query())
+            ->query(fn (): Builder => Order::query())
             ->columns([
                 TextColumn::make('order_number')
                     ->weight('bold')
-                    ->url(fn($record) => OrderResource::getUrl('edit', [$record])),
+                    ->url(fn ($record) => OrderResource::getUrl('edit',[$record])),
 
                 TextColumn::make('customer.name')
-                    ->url(fn($record) => CustomerResource::getUrl('edit', [$record->customer])),
+                    ->url(fn ($record) => CustomerResource::getUrl('edit',[$record->customer])),
 
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'processing' => 'info',
                         'shipped' => 'primary',

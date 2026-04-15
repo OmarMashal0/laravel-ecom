@@ -3,19 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
-use Filament\Panel;
-use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-
-class User extends Authenticatable implements FilamentUser // implements MustVerifyEmail
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
@@ -67,23 +66,21 @@ class User extends Authenticatable implements FilamentUser // implements MustVer
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
     // local scope
     #[Scope()]
-    protected function active(Builder $builder)
-    {
-        $builder->where('is_active', true);
+    public function active(Builder $builder){
+        $builder->where('is_active',true);
     }
 
     //relationship
-    public function orderStatusHistories()
-    {
+    public function orderStatusHistories(){
         return $this->hasMany(OrderStatusHistory::class);
     }
-    
+
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@example.com');

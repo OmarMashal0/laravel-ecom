@@ -24,7 +24,7 @@ class Setting extends Model
     }
 
     // Helper Methods
-    public static function getSetting($key, $default = null)
+    public static function get($key, $default = null)
     {
         $setting = static::where('key', $key)->first();
         
@@ -35,7 +35,7 @@ class Setting extends Model
         return static::castValue($setting->value, $setting->type);
     }
 
-    public static function setSetting($key, $value, $type = 'string', $group = 'general')
+    public static function set($key, $value, $type = 'string', $group = 'general')
     {
         return static::updateOrCreate(
             ['key' => $key],
@@ -47,13 +47,11 @@ class Setting extends Model
         );
     }
 
-    protected static function castValue($value, $type)
-    {
+    protected static function castValue($value, $type){
         return match ($type) {
-            'boolean' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+            'boolen' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
             'number' => is_numeric($value) ? (float) $value : $value,
             'json' => json_decode($value, true),
-            default => $value,
         };
     }
 

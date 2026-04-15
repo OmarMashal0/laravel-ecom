@@ -35,6 +35,7 @@ class Review extends Model
     {
         $query->where('is_approved', true);
     }
+    // Review::approved()->get()
 
     #[Scope]
     protected function verified(Builder $query): void

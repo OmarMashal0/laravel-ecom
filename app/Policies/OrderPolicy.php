@@ -37,11 +37,6 @@ class OrderPolicy
         return $authUser->can('Delete:Order');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Order');
-    }
-
     public function restore(AuthUser $authUser, Order $order): bool
     {
         return $authUser->can('Restore:Order');

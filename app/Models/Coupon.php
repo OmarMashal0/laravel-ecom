@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use function Livewire\Volt\protect;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -48,7 +49,7 @@ class Coupon extends Model
     #[Scope]
     protected function valid(Builder $builder){
         $now = Carbon::now();
-        $builder->active()
+        $builder->where('is_active', true)
         ->where(function($q) use($now){
             $q->whereNull('starts_at')->orWhere('starts_at', '<=', $now);
         })
@@ -67,13 +68,12 @@ class Coupon extends Model
     }
 
     //helper method
-    public function isValid()
-    {
+    public function isValid(){
         if (!$this->is_active) {
             return false;
         }
 
-        if ($this->starts_at && $this->starts_at->isFuture()) {
+        if ($this->expires_at && $this->starts_at->isFuture()) {
             return false;
         }
 
@@ -81,7 +81,7 @@ class Coupon extends Model
             return false;
         }
 
-        if ($this->usage_limit && $this->usages()->count() >= $this->usage_limit) {
+        if ($this->usage_limit && $this->usage->count() >= $this->usage_limit) {
             return false;
         }
 

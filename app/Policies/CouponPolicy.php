@@ -37,11 +37,6 @@ class CouponPolicy
         return $authUser->can('Delete:Coupon');
     }
 
-    public function deleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('DeleteAny:Coupon');
-    }
-
     public function restore(AuthUser $authUser, Coupon $coupon): bool
     {
         return $authUser->can('Restore:Coupon');
