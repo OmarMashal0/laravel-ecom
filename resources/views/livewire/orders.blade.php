@@ -72,7 +72,7 @@
                                     <div class="flex gap-4">
                                         <div class="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                                             @if($item->product && $item->product->primaryImage)
-                                                <img src="{{ asset('storage/' . $item->product->primaryImage->image_path) }}" 
+                                                <img src="{{ str_starts_with($item->product->primaryImage->image_path, 'http') ? $item->product->primaryImage->image_path : asset('storage/' . $item->product->primaryImage->image_path) }}" 
                                                      alt="{{ $item->product_name }}"
                                                      class="w-full h-full object-cover">
                                             @endif
