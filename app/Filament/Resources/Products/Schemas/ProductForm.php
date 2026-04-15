@@ -161,12 +161,18 @@ class ProductForm
                                             ->reorderable()
                                             ->columnSpanFull()
                                             ->helperText('You can drag and drop to reorder images')
+                                            ->afterStateHydrated(function (FileUpload $component, $record) {
+                                                if ($record) {
+                                                    $component->state($record->images->pluck('image_path')->toArray());
+                                                }
+                                            })
                                             ->saveRelationshipsUsing(function ($component, $state, $record) {
                                                 // delete exisiting images
                                                 $record->images()->delete();
 
                                                 if (is_array($state)) {
                                                     foreach ($state as $index => $imagePath) {
+                                                        // Ensure we don't try to "save" a temporary path if it's already a full URL or existing path
                                                         $record->images()->create([
                                                             'image_path' => $imagePath,
                                                             'is_primary' => $index === 0,

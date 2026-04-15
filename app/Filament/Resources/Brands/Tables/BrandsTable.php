@@ -19,8 +19,8 @@ class BrandsTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
-                TextColumn::make('logo')
-                    ->searchable(),
+                ImageColumn::make('image_url')
+                    ->label('Logo'),
                 TextColumn::make('website')
                     ->searchable(),
                 IconColumn::make('is_active')

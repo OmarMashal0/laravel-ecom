@@ -22,6 +22,7 @@ class ProductsTable
                 ImageColumn::make('primaryImage.image_path')
                     ->label('Image')
                     ->circular()
+                    ->url(fn ($record) => $record->primaryImage?->url)
                     ->defaultImageUrl(url('/images/placeholder.jpg')),
                 TextColumn::make('name')
                     ->searchable(),

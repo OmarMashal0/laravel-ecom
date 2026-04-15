@@ -56,7 +56,12 @@
                                 Featured
                             </span>
                         @endif
-                        @if($product->stock_status === 'in_stock')
+                        @php
+                            $currentStockStatus = $selectedVariant && $product->has_variants
+                                ? $product->variants->find($selectedVariant)->stock_status 
+                                : $product->stock_status;
+                        @endphp
+                        @if($currentStockStatus === 'in_stock')
                             <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded">
                                 In Stock
                             </span>
@@ -183,7 +188,7 @@
                     @endif
 
                     <!-- Add to Cart -->
-                    @if($product->stock_status === 'in_stock')
+                    @if($currentStockStatus === 'in_stock')
                         <button wire:click="addToCart"
                                 class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition font-semibold text-lg">
                             Add to Cart

@@ -20,7 +20,8 @@ class CategoriesTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image_url')
+                    ->label('Image'),
                 IconColumn::make('is_active')
                     ->boolean(),
                 TextColumn::make('sort_order')
