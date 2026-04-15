@@ -22,7 +22,7 @@
                     <!-- Main Image -->
                     <div class="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
                         @if($selectedImage)
-                            <img src="{{ asset('storage/' . $selectedImage) }}" 
+                            <img src="{{ str_starts_with($selectedImage, 'http') ? $selectedImage : asset('storage/' . $selectedImage) }}" 
                                  alt="{{ $product->name }}"
                                  class="w-full h-full object-cover">
                         @else
@@ -38,7 +38,7 @@
                             @foreach($product->images as $image)
                                 <button wire:click="selectImage('{{ $image->image_path }}')"
                                         class="aspect-square rounded-lg overflow-hidden border-2 {{ $selectedImage === $image->image_path ? 'border-blue-600' : 'border-gray-200' }} hover:border-indigo-400 transition">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                    <img src="{{ str_starts_with($image->image_path, 'http') ? $image->image_path : asset('storage/' . $image->image_path) }}" 
                                          alt="{{ $product->name }}"
                                          class="w-full h-full object-cover">
                                 </button>

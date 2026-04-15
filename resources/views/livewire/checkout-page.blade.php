@@ -194,7 +194,7 @@
                                 <div class="flex gap-4 pb-4 border-b">
                                     <div class="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                                         @if($item['image'])
-                                            <img src="{{ asset('storage/' . $item['image']) }}" 
+                                            <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : asset('storage/' . $item['image']) }}" 
                                                  alt="{{ $item['name'] }}"
                                                  class="w-full h-full object-cover">
                                         @endif

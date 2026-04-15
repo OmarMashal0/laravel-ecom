@@ -20,7 +20,7 @@ class ProductImageFactory extends Factory
         return [
             'product_id' => Product::factory(),
             'product_variant_id' => null,
-            'image_path' => 'products/placeholder-' . $this->faker->numberBetween(1, 5) . '.jpg',
+            'image_path' => 'https://loremflickr.com/800/800/product/all?lock=' . $this->faker->unique()->numberBetween(1, 1000),
             'alt_text' => $this->faker->sentence(3),
             'is_primary' => false,
             'sort_order' => $this->faker->numberBetween(0, 10),
