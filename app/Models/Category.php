@@ -52,4 +52,13 @@ class Category extends Model
             }
         });
     }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) return null;
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+        return asset('storage/' . $this->image);
+    }
 }

@@ -55,7 +55,7 @@
                         @foreach($order->items->take(3) as $item)
                             <div class="flex items-center gap-4">
                                 @if($item->product && $item->product->primaryImage)
-                                    <img src="{{ asset('storage/' . $item->product->primaryImage->image_path) }}" 
+                                    <img src="{{ str_starts_with($item->product->primaryImage->image_path, 'http') ? $item->product->primaryImage->image_path : asset('storage/' . $item->product->primaryImage->image_path) }}" 
                                          alt="{{ $item->product_name }}"
                                          class="w-16 h-16 object-cover rounded-lg">
                                 @else
