@@ -19,33 +19,33 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->words(3, true);
+        $name = $this->faker->words(3, true);
         $name = ucwords($name);
-        $price = fake()->randomFloat(2, 10, 500);
-        $comparePrice = fake()->boolean(30) ? $price * fake()->randomFloat(2, 1.1, 1.5) : null;
+        $price = $this->faker->randomFloat(2, 10, 500);
+        $comparePrice = $this->faker->boolean(30) ? $price * $this->faker->randomFloat(2, 1.1, 1.5) : null;
 
         return [
             'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
-            'brand_id' => fake()->boolean(80) ? (Brand::inRandomOrder()->first()?->id ?? Brand::factory()) : null,
+            'brand_id' => $this->faker->boolean(80) ? (Brand::inRandomOrder()->first()?->id ?? Brand::factory()) : null,
             'name' => $name,
-            'slug' => Str::slug($name) . '-' . fake()->unique()->numberBetween(1000, 9999),
+            'slug' => Str::slug($name) . '-' . $this->faker->unique()->numberBetween(1000, 9999),
             'sku' => 'SKU-' . strtoupper(Str::random(8)),
-            'short_description' => fake()->sentence(15),
-            'description' => '<p>' . fake()->paragraph(10) . '</p><p>' . fake()->paragraph(8) . '</p>',
+            'short_description' => $this->faker->sentence(15),
+            'description' => '<p>' . $this->faker->paragraph(10) . '</p><p>' . $this->faker->paragraph(8) . '</p>',
             'price' => $price,
             'compare_price' => $comparePrice,
             'cost_price' => $price * 0.6,
-            'stock_quantity' => fake()->numberBetween(0, 500),
+            'stock_quantity' => $this->faker->numberBetween(0, 500),
             'low_stock_threshold' => 10,
             'manage_stock' => true,
-            'stock_status' => fake()->randomElement(['in_stock', 'in_stock', 'in_stock', 'out_of_stock']),
-            'is_active' => fake()->boolean(95),
-            'is_featured' => fake()->boolean(20),
-            'has_variants' => fake()->boolean(30),
-            'weight' => fake()->randomFloat(2, 0.1, 50),
+            'stock_status' => $this->faker->randomElement(['in_stock', 'in_stock', 'in_stock', 'out_of_stock']),
+            'is_active' => $this->faker->boolean(95),
+            'is_featured' => $this->faker->boolean(20),
+            'has_variants' => $this->faker->boolean(30),
+            'weight' => $this->faker->randomFloat(2, 0.1, 50),
             'meta_title' => $name,
-            'meta_description' => fake()->sentence(20),
-            'views_count' => fake()->numberBetween(0, 1000),
+            'meta_description' => $this->faker->sentence(20),
+            'views_count' => $this->faker->numberBetween(0, 1000),
         ];
     }
 }
