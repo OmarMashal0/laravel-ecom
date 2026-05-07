@@ -12,6 +12,11 @@ export LOG_CHANNEL=stderr
 export APP_DEBUG=true
 export APP_ENV=production
 
+# Save DB connections by using file-based sessions and cache
+export SESSION_DRIVER=file
+export CACHE_STORE=file
+export DATABASE_URL= # Clear if any to avoid confusion
+
 # 1. Environment Check
 echo "🔍 Checking Environment..."
 echo "APP_ENV: $APP_ENV"
