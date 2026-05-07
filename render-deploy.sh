@@ -11,6 +11,9 @@ export APP_DEBUG=false
 export APP_URL=https://laravel-ecom-7bos.onrender.com
 export SESSION_DRIVER=file
 export CACHE_STORE=file
+# Render free tier blocks outbound SMTP (port 587/465).
+# Use 'log' driver so order emails are logged but don't crash the app.
+export MAIL_MAILER=log
 
 # Fix permissions for PHP-FPM (runs as www-data)
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
