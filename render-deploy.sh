@@ -11,6 +11,11 @@ echo "--------------------------------------------------------"
 echo "🔗 Linking storage..."
 php artisan storage:link || true
 
+# Force logging to stderr and enable debug mode for troubleshooting
+export LOG_CHANNEL=stderr
+export APP_DEBUG=true
+export APP_ENV=production
+
 # Run migrations
 echo "🐘 Running migrations..."
 # We wrap migration in a loop to wait for DB if needed
