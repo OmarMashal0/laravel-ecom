@@ -3,7 +3,7 @@
 A feature-rich, modern e-commerce platform built with the latest Laravel ecosystem. This system provides a seamless shopping experience for customers and a powerful administrative dashboard for store management.
 
 ## 🚀 Live Demo
-You can explore the live application here: [https://ecommerce.free.laravel.cloud/](https://ecommerce.free.laravel.cloud/)
+You can explore the live application here: [https://laravel-ecom-7bos.onrender.com](https://laravel-ecom-7bos.onrender.com)
 
 ---
 
