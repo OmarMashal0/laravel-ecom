@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "=========================================="
-echo "🚀 RENDER DEPLOYMENT START"
+echo "🚀 RENDER DEPLOYMENT START (Nginx + PHP-FPM)"
 echo "=========================================="
 
 # --- Environment ---
@@ -9,7 +9,6 @@ export LOG_CHANNEL=stderr
 export APP_ENV=production
 export APP_DEBUG=false
 export APP_URL=https://laravel-ecom-7bos.onrender.com
-# Use file drivers to avoid wasting DB connections on sessions/cache
 export SESSION_DRIVER=file
 export CACHE_STORE=file
 
@@ -20,35 +19,41 @@ chmod -R 775 storage bootstrap/cache
 echo "[$(date)] 🔗 Linking storage..."
 php artisan storage:link || true
 
-# --- Run Migrations (blocking, must finish before server starts) ---
+# --- Run Migrations (blocking) ---
 echo "[$(date)] 🐘 Running Migrations..."
 php artisan migrate --force --no-interaction
 echo "[$(date)] ✅ Migrations done."
 
 # --- Cache everything for production speed ---
-# This must run AFTER migrations and BEFORE serving
 echo "[$(date)] ⚡ Caching config, routes, and views..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-echo "[$(date)] ✅ Caching done."
+echo "[$(date)] ✅ All caches warm."
 
-# --- Start Server FIRST so Render detects the port immediately ---
-echo "[$(date)] 🌐 Starting server on 0.0.0.0:${PORT:-8080}..."
-# PHP_CLI_SERVER_WORKERS=2: allows health check + one user request simultaneously
-# without exceeding Filess.io's 5-connection limit
-export PHP_CLI_SERVER_WORKERS=2
-php artisan serve --host=0.0.0.0 --port="${PORT:-8080}" &
-SERVER_PID=$!
+# --- Configure nginx with the dynamic PORT from Render ---
+export PORT="${PORT:-8080}"
+echo "[$(date)] 🔧 Configuring Nginx on port $PORT..."
+sed -i "s/PORT_PLACEHOLDER/$PORT/g" /etc/nginx/sites-available/default
+# Remove the default nginx site if it exists
+rm -f /etc/nginx/sites-enabled/default
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# Test nginx config
+nginx -t
 
-echo "[$(date)] ✅ Server started (PID $SERVER_PID). Running post-boot setup in background..."
+# --- Start PHP-FPM in background ---
+echo "[$(date)] 🐘 Starting PHP-FPM..."
+php-fpm -D
+echo "[$(date)] ✅ PHP-FPM started."
 
-# --- Seeding runs in the background so the server is not blocked ---
+# --- Start Nginx in foreground (keeps container alive) ---
+echo "[$(date)] 🌐 Starting Nginx..."
+
+# --- Background seeding (runs after server is up) ---
 (
-  sleep 5 # Wait for server to warm up
+  sleep 10
 
   echo "[$(date)] 🌱 Checking if seeding is needed..."
-  # Temporarily clear config cache to run PHP directly
   CAT_COUNT=$(php -r "
     include 'vendor/autoload.php';
     \$app = include 'bootstrap/app.php';
@@ -61,17 +66,18 @@ echo "[$(date)] ✅ Server started (PID $SERVER_PID). Running post-boot setup in
   if [ "$CAT_COUNT" = "0" ]; then
     echo "[$(date)] 🆕 Seeding demo data..."
     php -d memory_limit=-1 artisan db:seed --force --no-interaction
-    echo "[$(date)] 🛡️ Generating Shield permissions..."
     php -d memory_limit=-1 artisan shield:generate --all --panel=admin --no-interaction || true
-    echo "[$(date)] 👑 Creating Super Admin..."
     php -d memory_limit=-1 artisan shield:super-admin --user=1 --panel=admin --no-interaction || true
-    echo "[$(date)] 🖼️ Linking placeholder images..."
     php -d memory_limit=-1 artisan app:download-placeholders || true
-    echo "[$(date)] ✅ Seeding complete!"
+    # Re-warm caches after seeding
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+    echo "[$(date)] ✅ Seeding complete and caches refreshed."
   else
     echo "[$(date)] ✅ Data exists ($CAT_COUNT categories). Skipping seeding."
   fi
 ) &
 
-# Wait for the server process to exit (keeps container alive)
-wait $SERVER_PID
+# Start nginx in the foreground - this keeps the container running
+exec nginx -g "daemon off;"
