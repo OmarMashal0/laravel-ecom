@@ -13,11 +13,21 @@ php artisan storage:link || true
 
 # Run migrations
 echo "🐘 Running migrations..."
-php artisan migrate --force
+# We wrap migration in a loop to wait for DB if needed
+MAX_TRIES=5
+COUNT=0
+while [ $COUNT -lt $MAX_TRIES ]; do
+    if php artisan migrate --force; then
+        break
+    fi
+    echo "⚠️ Migration failed, retrying in 5s... ($((COUNT+1))/$MAX_TRIES)"
+    sleep 5
+    COUNT=$((COUNT+1))
+done
 
 # Check if database needs seeding (checks if any categories exist)
-# We use a more robust check that handles potential PHP warnings
-CAN_SEED=$(php -d memory_limit=-1 -r "include 'vendor/autoload.php'; \$app = include 'bootstrap/app.php'; \$app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap(); echo \App\Models\Category::exists() ? 'no' : 'yes';" 2>/dev/null | tail -n 1)
+# We use a simpler artisan command approach
+CAN_SEED=$(php artisan tinker --execute="echo \App\Models\Category::exists() ? 'no' : 'yes';" | tail -n 1 | grep -o "yes\|no" || echo "no")
 
 if [ "$CAN_SEED" = "yes" ]; then
     echo "🌱 Database is empty. Running initial setup..."

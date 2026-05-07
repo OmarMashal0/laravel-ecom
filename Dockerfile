@@ -26,6 +26,7 @@ RUN npm install && npm run build
 RUN chmod -R 775 storage bootstrap/cache
 
 COPY render-deploy.sh .
+RUN sed -i 's/\r$//' render-deploy.sh
 RUN chmod +x render-deploy.sh
 
 CMD ["./render-deploy.sh"]
