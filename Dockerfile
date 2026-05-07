@@ -26,7 +26,8 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install && npm run build
 
-RUN chmod -R 775 storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
 COPY nginx.conf /etc/nginx/sites-available/default
 COPY render-deploy.sh .

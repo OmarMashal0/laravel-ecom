@@ -12,7 +12,8 @@ export APP_URL=https://laravel-ecom-7bos.onrender.com
 export SESSION_DRIVER=file
 export CACHE_STORE=file
 
-# Fix permissions
+# Fix permissions for PHP-FPM (runs as www-data)
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
 # Storage link
