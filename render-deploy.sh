@@ -55,6 +55,9 @@ php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 
+echo "🚀 Enabling multi-process mode..."
+export PHP_CLI_SERVER_WORKERS=4
+
 echo "🌐 Starting server on 0.0.0.0:${PORT}..."
-# Using php -S directly is often more reliable for Render's port detection than 'artisan serve'
-exec php -S 0.0.0.0:"${PORT:-8080}" -t public/
+# Using php -S with index.php as router
+exec php -S 0.0.0.0:"${PORT:-8080}" -t public/ public/index.php
